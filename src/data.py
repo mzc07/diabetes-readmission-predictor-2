@@ -17,7 +17,14 @@ RANDOM_STATE = 42
 EXCLUDED_DISCHARGE_IDS = (11, 13, 14, 19, 20, 21)
 
 # Identificadores, columnas casi vacías y constantes.
-DROP_COLS = ["encounter_id", "patient_nbr", "weight", "payer_code", "examide", "citoglipton"]
+DROP_COLS = [
+    "encounter_id",
+    "patient_nbr",
+    "weight",
+    "payer_code",
+    "examide",
+    "citoglipton",
+]
 
 _STR_COLS = {"diag_1": str, "diag_2": str, "diag_3": str}
 
@@ -54,4 +61,6 @@ def load_dataset(path: Path | str = RAW_PATH) -> tuple[pd.DataFrame, pd.Series]:
 
 def split_train_test(X: pd.DataFrame, y: pd.Series, test_size: float = 0.2):
     """Split estratificado 80/20 (se hace ANTES de imputar/codificar)."""
-    return train_test_split(X, y, test_size=test_size, stratify=y, random_state=RANDOM_STATE)
+    return train_test_split(
+        X, y, test_size=test_size, stratify=y, random_state=RANDOM_STATE
+    )

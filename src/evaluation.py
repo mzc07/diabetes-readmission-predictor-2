@@ -32,7 +32,9 @@ def compute_metrics(y_true, proba, threshold: float) -> dict:
 def plot_roc_pr(y_true, proba, path=None):
     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
     RocCurveDisplay.from_predictions(y_true, proba, ax=ax[0], plot_chance_level=True)
-    PrecisionRecallDisplay.from_predictions(y_true, proba, ax=ax[1], plot_chance_level=True)
+    PrecisionRecallDisplay.from_predictions(
+        y_true, proba, ax=ax[1], plot_chance_level=True
+    )
     ax[0].set_title("Curva ROC (test)")
     ax[1].set_title("Curva Precision-Recall (test)")
     fig.tight_layout()
@@ -44,7 +46,11 @@ def plot_roc_pr(y_true, proba, path=None):
 def plot_confusion(y_true, proba, threshold, path=None):
     fig, ax = plt.subplots(figsize=(4.5, 4))
     ConfusionMatrixDisplay.from_predictions(
-        y_true, (np.asarray(proba) >= threshold).astype(int), ax=ax, cmap="Blues", colorbar=False
+        y_true,
+        (np.asarray(proba) >= threshold).astype(int),
+        ax=ax,
+        cmap="Blues",
+        colorbar=False,
     )
     ax.set_title(f"Matriz de confusión (umbral={threshold:.2f})")
     fig.tight_layout()
@@ -70,7 +76,11 @@ def global_importance(pipe, X, y, n_repeats: int = 5, seed: int = 42) -> pd.Data
     )
     return (
         pd.DataFrame(
-            {"feature": X.columns, "importance": r.importances_mean, "std": r.importances_std}
+            {
+                "feature": X.columns,
+                "importance": r.importances_mean,
+                "std": r.importances_std,
+            }
         )
         .sort_values("importance", ascending=False)
         .reset_index(drop=True)
@@ -111,7 +121,9 @@ def shap_explanation(pipe, X, max_rows: int = 2000, seed: int = 42):
 
     sample = X.sample(min(max_rows, len(X)), random_state=seed)
     Xt = pd.DataFrame(
-        pipe[:-1].transform(sample), columns=pipe[:-1].get_feature_names_out(), index=sample.index
+        pipe[:-1].transform(sample),
+        columns=pipe[:-1].get_feature_names_out(),
+        index=sample.index,
     )
     explainer = shap.TreeExplainer(pipe[-1])
     return explainer(Xt)

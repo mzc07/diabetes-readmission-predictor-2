@@ -27,11 +27,18 @@ except ImportError:  # respaldo equivalente de scikit-learn (boosting por histog
 def make_gbm(**params):
     """LightGBM si está instalado; si no, HistGradientBoosting (misma familia de algoritmo)."""
     if GBM_BACKEND == "lightgbm":
-        base = {"class_weight": "balanced", "random_state": SEED, "n_jobs": -1, "verbose": -1}
+        base = {
+            "class_weight": "balanced",
+            "random_state": SEED,
+            "n_jobs": -1,
+            "verbose": -1,
+        }
         if "subsample" in params:
             base["subsample_freq"] = 1
         return LGBMClassifier(**{**base, **params})
-    return HistGradientBoostingClassifier(class_weight="balanced", random_state=SEED, **params)
+    return HistGradientBoostingClassifier(
+        class_weight="balanced", random_state=SEED, **params
+    )
 
 
 def gbm_param_space() -> dict:
@@ -64,7 +71,10 @@ def get_models() -> dict[str, Pipeline]:
         "LogReg": Pipeline(
             [
                 ("prep", build_preprocessor(scale=True)),
-                ("model", LogisticRegression(class_weight="balanced", max_iter=2000, C=0.1)),
+                (
+                    "model",
+                    LogisticRegression(class_weight="balanced", max_iter=2000, C=0.1),
+                ),
             ]
         ),
         "Árbol": Pipeline(
@@ -111,7 +121,11 @@ def best_f1_threshold(y_true, proba) -> float:
 def _f1(y_true, pred) -> float:
     y_true = np.asarray(y_true)
     tp = np.sum((pred == 1) & (y_true == 1))
-    denom = 2 * tp + np.sum((pred == 1) & (y_true == 0)) + np.sum((pred == 0) & (y_true == 1))
+    denom = (
+        2 * tp
+        + np.sum((pred == 1) & (y_true == 0))
+        + np.sum((pred == 0) & (y_true == 1))
+    )
     return 2 * tp / denom if denom else 0.0
 
 
