@@ -1,4 +1,3 @@
-# Imagen reproducible del proyecto: notebooks, tests y app Streamlit.
 FROM python:3.11-slim
 
 # libgomp1: requerido por LightGBM / scikit-learn (OpenMP)
