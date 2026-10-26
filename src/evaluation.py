@@ -32,9 +32,7 @@ def compute_metrics(y_true, proba, threshold: float) -> dict:
 def plot_roc_pr(y_true, proba, path=None):
     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
     RocCurveDisplay.from_predictions(y_true, proba, ax=ax[0], plot_chance_level=True)
-    PrecisionRecallDisplay.from_predictions(
-        y_true, proba, ax=ax[1], plot_chance_level=True
-    )
+    PrecisionRecallDisplay.from_predictions(y_true, proba, ax=ax[1], plot_chance_level=True)
     ax[0].set_title("Curva ROC (test)")
     ax[1].set_title("Curva Precision-Recall (test)")
     fig.tight_layout()

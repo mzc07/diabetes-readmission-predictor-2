@@ -36,9 +36,7 @@ def make_gbm(**params):
         if "subsample" in params:
             base["subsample_freq"] = 1
         return LGBMClassifier(**{**base, **params})
-    return HistGradientBoostingClassifier(
-        class_weight="balanced", random_state=SEED, **params
-    )
+    return HistGradientBoostingClassifier(class_weight="balanced", random_state=SEED, **params)
 
 
 def gbm_param_space() -> dict:
@@ -121,11 +119,7 @@ def best_f1_threshold(y_true, proba) -> float:
 def _f1(y_true, pred) -> float:
     y_true = np.asarray(y_true)
     tp = np.sum((pred == 1) & (y_true == 1))
-    denom = (
-        2 * tp
-        + np.sum((pred == 1) & (y_true == 0))
-        + np.sum((pred == 0) & (y_true == 1))
-    )
+    denom = 2 * tp + np.sum((pred == 1) & (y_true == 0)) + np.sum((pred == 0) & (y_true == 1))
     return 2 * tp / denom if denom else 0.0
 
 

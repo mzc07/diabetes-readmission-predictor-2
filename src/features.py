@@ -1,8 +1,8 @@
 """Ingeniería de variables y preprocesador sin fuga de datos (HU-04).
 
-``engineer`` es determinista (no aprende nada de los datos), por lo que puede aplicarse antes del
-split. Todo lo que *aprende* (imputación, categorías, escalado) vive en ``build_preprocessor`` y
-se ajusta únicamente con train dentro de un ``Pipeline``.
+``engineer`` es determinista (no aprende nada de los datos), por lo que puede
+aplicarse antes del split. Todo lo que *aprende* (imputación, categorías, escalado)
+vive en ``build_preprocessor`` y se ajusta únicamente con train dentro de un ``Pipeline``.
 """
 
 import numpy as np
