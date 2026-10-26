@@ -1,7 +1,7 @@
-"""Carga, filtros y construcción del target (HU-03).
+"""Carga, filtros y construcción del target.
 
-Decisiones (ver docs/DECISIONES.md): primer encuentro por paciente, exclusión de altas por
-fallecimiento/hospicio, target binario ``readmitted == "<30"``.
+Se usa el primer encuentro por paciente, se quitan las altas por fallecimiento/hospicio y el
+target es ``readmitted == "<30"``.
 """
 
 from pathlib import Path

@@ -1,7 +1,7 @@
 [project]
 name = "diabetes-readmission-predictor"
 version = "0.1.0"
-description = "Predict if the pacient will be readmitted in less than 30 days"
+description = "Predecir si un paciente diabético reingresa al hospital en menos de 30 días"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
@@ -14,8 +14,6 @@ dependencies = [
   "pandas",
   "numpy",
   "scikit-learn",
-  "lightgbm",
-  "shap",
   "matplotlib",
   "seaborn",
   "streamlit", 
@@ -24,7 +22,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pytest",
     "ruff",
     "nbconvert",
     "ipykernel",
@@ -41,6 +38,3 @@ packages = ["src"]
 [tool.ruff]
 line-length = 100
 extend-exclude = ["*.ipynb"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]

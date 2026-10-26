@@ -1,4 +1,4 @@
-"""Métricas, curvas e interpretabilidad (HU-07, HU-08)."""
+"""Métricas, gráficas e importancia de variables."""
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -57,16 +57,6 @@ def plot_confusion(y_true, proba, threshold, path=None):
     return fig
 
 
-# ---------------------------------------------------------------- interpretabilidad
-def shap_available() -> bool:
-    try:
-        import shap  # noqa: F401
-
-        return True
-    except ImportError:
-        return False
-
-
 def global_importance(pipe, X, y, n_repeats: int = 5, seed: int = 42) -> pd.DataFrame:
     """Importancia por permutación (caída de ROC-AUC) sobre las columnas ORIGINALES."""
     r = permutation_importance(
@@ -83,45 +73,3 @@ def global_importance(pipe, X, y, n_repeats: int = 5, seed: int = 42) -> pd.Data
         .sort_values("importance", ascending=False)
         .reset_index(drop=True)
     )
-
-
-def local_occlusion(pipe, row: pd.DataFrame, background: pd.DataFrame) -> pd.Series:
-    """Contribución de cada variable a la predicción de UN paciente (log-odds).
-
-    Para cada columna, se sustituye su valor por los de una muestra de referencia y se mide
-    cuánto cambia el log-odds en promedio. Es la aproximación de primer orden de un valor de
-    Shapley (sin interacciones); se usa cuando ``shap`` no está disponible.
-    """
-
-    def logit(p):
-        p = np.clip(p, 1e-6, 1 - 1e-6)
-        return np.log(p / (1 - p))
-
-    base = logit(pipe.predict_proba(row)[:, 1])[0]
-    bg_mean = logit(pipe.predict_proba(background)[:, 1]).mean()
-    out = {}
-    for col in row.columns:
-        perturbed = background.copy()
-        perturbed[col] = row[col].iloc[0]
-        out[col] = logit(pipe.predict_proba(perturbed)[:, 1]).mean() - bg_mean
-    s = pd.Series(out, name="contribucion")
-    s.attrs["base"] = base
-    return s.sort_values(key=np.abs, ascending=False)
-
-
-def shap_explanation(pipe, X, max_rows: int = 2000, seed: int = 42):
-    """Explicación SHAP (TreeExplainer) sobre una muestra de ``X``; requiere ``shap``.
-
-    El explainer se aplica al último paso (modelo) con datos ya transformados:
-    ``pipe[:-1].transform(X)`` y ``pipe[-1]``.
-    """
-    import shap
-
-    sample = X.sample(min(max_rows, len(X)), random_state=seed)
-    Xt = pd.DataFrame(
-        pipe[:-1].transform(sample),
-        columns=pipe[:-1].get_feature_names_out(),
-        index=sample.index,
-    )
-    explainer = shap.TreeExplainer(pipe[-1])
-    return explainer(Xt)

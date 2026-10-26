@@ -1,4 +1,4 @@
-"""Ingeniería de variables y preprocesador sin fuga de datos (HU-04).
+"""Ingeniería de variables y preprocesador sin fuga de datos.
 
 ``engineer`` es determinista (no aprende nada de los datos), por lo que puede
 aplicarse antes del split. Todo lo que *aprende* (imputación, categorías, escalado)
