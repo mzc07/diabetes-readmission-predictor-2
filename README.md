@@ -2,6 +2,8 @@
 
 ![Imagen ML](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuCI42BNejNN0PX3pC1k7_eX1-c-RQ_LCCPxMRDb-cisdGsVyBU_fyuAY&s=10)
 
+Predicción de reingreso hospitalario **<30 días** en pacientes diabéticos (UCI "Diabetes 130-US Hospitals", licencia CC BY 4.0) e interpretación del modelo.
+
 ## Autores
 - [Martín Ariza (2251516)](https://github.com/mzc07)
 - [Ivanna Álvarez (2251805)](https://github.com/Ivannaalvarezs)
